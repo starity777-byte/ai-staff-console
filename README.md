@@ -46,3 +46,10 @@ npm run test       # Vitest 单元测试
 ```
 
 > 注：业务数据由 Pinia 持久化到 localStorage。员工头像按姓名离线生成首字，不请求外部图片。
+
+## 部署（GitHub Pages）
+
+- 生产构建 `base` 为 `/ai-staff-console/`，路由使用 Hash 模式（`createWebHashHistory`），无需服务端回退配置。
+- 推送到 `main` 分支后，`.github/workflows/deploy.yml` 自动执行 `npm ci` + `npm run build`（Node 20），并通过 `actions/deploy-pages` 发布 `dist`。
+- 仓库 Settings → Pages 的 Source 需设为 “GitHub Actions”。
+- 在线地址：https://starity777-byte.github.io/ai-staff-console/

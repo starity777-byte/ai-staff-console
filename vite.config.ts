@@ -4,7 +4,8 @@ import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import { fileURLToPath, URL } from 'node:url'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/ai-staff-console/' : '/',
   plugins: [
     vue(),
     Components({
@@ -18,4 +19,4 @@ export default defineConfig({
   test: {
     environment: 'jsdom'
   }
-})
+}))

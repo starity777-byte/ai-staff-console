@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import BasicLayout from '@/layouts/BasicLayout.vue'
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [{
     path: '/', component: BasicLayout, redirect: '/dashboard',
     children: [
