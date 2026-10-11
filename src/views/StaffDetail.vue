@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { theme } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import { useStaffStore } from '@/stores/staff'
@@ -8,6 +9,7 @@ import { PRIORITY, STAFF_STATUS, TASK_STATUS, THEME_PRIMARY } from '@/mock/const
 import { activityDotColor, activityRelatesTo } from '@/utils/activity'
 import type { Task } from '@/types'
 
+const { token } = theme.useToken()
 const route = useRoute()
 const router = useRouter()
 const staffStore = useStaffStore()
@@ -131,12 +133,12 @@ function goList() { router.push('/staff') }
 <style scoped>
 .page { display: flex; flex-direction: column; gap: 16px; }
 .profile { display: flex; align-items: center; gap: 16px; }
-.avatar { background: #f0f0ff; flex-shrink: 0; }
+.avatar { background: v-bind('token.colorPrimaryBg'); flex-shrink: 0; }
 .name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.name-row h2 { margin: 0; font-size: 20px; }
-.joined { margin-top: 6px; color: #8c8c8c; }
+.name-row h2 { margin: 0; font-size: 20px; color: v-bind('token.colorText'); }
+.joined { margin-top: 6px; color: v-bind('token.colorTextDescription'); }
 .fields { display: flex; flex-direction: column; gap: 12px; }
 .field { display: flex; align-items: flex-start; gap: 12px; }
-.label { width: 72px; flex-shrink: 0; color: #8c8c8c; line-height: 24px; }
-.time { color: #8c8c8c; font-size: 12px; }
+.label { width: 72px; flex-shrink: 0; color: v-bind('token.colorTextDescription'); line-height: 24px; }
+.time { color: v-bind('token.colorTextDescription'); font-size: 12px; }
 </style>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { theme } from 'ant-design-vue'
 import { TeamOutlined, ThunderboltOutlined, SyncOutlined, CheckCircleOutlined } from '@ant-design/icons-vue'
 import StatCard from '@/components/StatCard.vue'
 import { useStaffStore } from '@/stores/staff'
 import { useTaskStore } from '@/stores/task'
 import { TASK_STATUS, THEME_PRIMARY } from '@/mock/constants'
 import { activityDotColor } from '@/utils/activity'
+const { token } = theme.useToken()
 const staff = useStaffStore()
 const task = useTaskStore()
 const cards = computed(() => [
@@ -47,7 +49,7 @@ const statusDist = computed(() => (Object.keys(TASK_STATUS) as (keyof typeof TAS
   </a-row>
 </template>
 <style scoped>
-.time { color: #8c8c8c; font-size: 12px; }
+.time { color: v-bind('token.colorTextDescription'); font-size: 12px; }
 .dist { display: flex; align-items: center; gap: 12px; }
 .label { width: 130px; flex-shrink: 0; }
 </style>

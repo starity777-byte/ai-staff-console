@@ -6,6 +6,11 @@ import 'ant-design-vue/dist/reset.css'
 import App from './App.vue'
 import router from './router'
 
+import { useAppStore } from './stores/app'
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-createApp(App).use(pinia).use(router).use(Antd).mount('#app')
+const app = createApp(App)
+app.use(pinia)
+useAppStore()
+app.use(router).use(Antd).mount('#app')

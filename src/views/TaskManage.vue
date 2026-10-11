@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ref, computed, watch, reactive } from 'vue'
-import { message } from 'ant-design-vue'
+import { message, theme } from 'ant-design-vue'
 import { PlusOutlined, CalendarOutlined } from '@ant-design/icons-vue'
 import draggable from 'vuedraggable'
 import TaskFormModal from '@/components/TaskFormModal.vue'
 import { useTaskStore } from '@/stores/task'
 import { useStaffStore } from '@/stores/staff'
 import { TASK_STATUS, PRIORITY, THEME_PRIMARY } from '@/mock/constants'
+import { useAppStore } from '@/stores/app'
 import type { Task } from '@/types'
 
 const VIEW_KEY = 'task-view-mode'
 
+const { token } = theme.useToken()
+const appStore = useAppStore()
+const accentText = computed(() => (appStore.theme === 'dark' ? token.value.colorPrimaryHover : THEME_PRIMARY))
 const task = useTaskStore()
 const staff = useStaffStore()
 const filter = ref<'all' | Task['status']>('all')
@@ -33,11 +37,11 @@ const viewOptions = [
   { label: '看板', value: 'board' }
 ]
 const statusOrder = Object.keys(TASK_STATUS) as Task['status'][]
-const columnAccent: Record<Task['status'], string> = {
-  todo: '#8c8c8c',
+const columnAccent = computed<Record<Task['status'], string>>(() => ({
+  todo: token.value.colorTextTertiary,
   doing: THEME_PRIMARY,
-  done: '#52c41a'
-}
+  done: token.value.colorSuccess
+}))
 const columnLists = reactive<Record<Task['status'], Task[]>>({ todo: [], doing: [], done: [] })
 
 function syncColumns() {
@@ -100,7 +104,7 @@ function onDelete(t: Task) { task.remove(t.id); message.success('任务已删除
         </template>
         <template v-else-if="column.key === 'status'"><a-tag :color="TASK_STATUS[record.status as Task['status']].color">{{ TASK_STATUS[record.status as Task['status']].text }}</a-tag></template>
         <template v-else-if="column.key === 'action'">
-          <a-popconfirm title="确定删除该任务？" ok-text="删除" cancel-text="取消" @confirm="onDelete(record as Task)"><a style="color: #ff4d4f">删除</a></a-popconfirm>
+          <a-popconfirm title="确定删除该任务？" ok-text="删除" cancel-text="取消" @confirm="onDelete(record as Task)"><a class="danger">删除</a></a-popconfirm>
         </template>
       </template>
     </a-table>
@@ -150,24 +154,25 @@ function onDelete(t: Task) { task.remove(t.id); message.success('任务已删除
 <style scoped>
 .toolbar { display: flex; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
 .toolbar-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.sub { color: #8c8c8c; font-size: 12px; }
+.sub { color: v-bind('token.colorTextDescription'); font-size: 12px; }
+.danger { color: v-bind('token.colorError'); }
 .kanban { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
-.kanban-col { background: #f6f6fb; border-radius: 10px; padding: 12px; min-height: 420px; display: flex; flex-direction: column; }
+.kanban-col { background: v-bind('token.colorFillTertiary'); border-radius: 10px; padding: 12px; min-height: 420px; display: flex; flex-direction: column; color: v-bind('token.colorText'); }
 .kanban-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-weight: 600; }
 .kanban-title { display: inline-flex; align-items: center; gap: 8px; }
 .kanban-dot { width: 8px; height: 8px; border-radius: 50%; }
-.kanban-count { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: #fff; color: v-bind(THEME_PRIMARY); font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
+.kanban-count { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: v-bind('token.colorBgElevated'); color: v-bind(accentText); font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
 .kanban-body { position: relative; flex: 1; }
 .kanban-list { min-height: 280px; }
-.task-card { background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: grab; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); user-select: none; }
-.task-card:hover { border-color: v-bind(THEME_PRIMARY); }
+.task-card { background: v-bind('token.colorBgElevated'); color: v-bind('token.colorText'); border: 1px solid v-bind('token.colorBorderSecondary'); border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: grab; box-shadow: v-bind('token.boxShadowTertiary'); user-select: none; }
+.task-card:hover { border-color: v-bind(accentText); }
 .task-card:active { cursor: grabbing; }
 .task-card-title { font-weight: 600; line-height: 1.45; margin-bottom: 8px; }
-.task-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; row-gap: 6px; margin-top: 10px; font-size: 12px; color: #595959; flex-wrap: wrap; }
+.task-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; row-gap: 6px; margin-top: 10px; font-size: 12px; color: v-bind('token.colorTextSecondary'); flex-wrap: wrap; }
 .task-card-foot :deep(.ant-space) { flex-shrink: 0; }
-.due { color: #8c8c8c; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
-.kanban-empty { position: absolute; left: 0; right: 0; top: 48px; text-align: center; color: #bfbfbf; pointer-events: none; }
-.task-card-ghost { opacity: 0.55; background: #f0f0ff; border: 1px dashed v-bind(THEME_PRIMARY); }
+.due { color: v-bind('token.colorTextDescription'); display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.kanban-empty { position: absolute; left: 0; right: 0; top: 48px; text-align: center; color: v-bind('token.colorTextQuaternary'); pointer-events: none; }
+.task-card-ghost { opacity: 0.55; background: v-bind('token.colorPrimaryBg'); border: 1px dashed v-bind(accentText); }
 @media (max-width: 900px) {
   .kanban { grid-template-columns: 1fr; }
 }

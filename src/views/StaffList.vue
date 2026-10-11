@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { message } from 'ant-design-vue'
+import { message, theme } from 'ant-design-vue'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import StaffFormDrawer from '@/components/StaffFormDrawer.vue'
 import { useStaffStore } from '@/stores/staff'
 import { MODELS } from '@/mock'
 import { STAFF_STATUS, THEME_PRIMARY } from '@/mock/constants'
+import { useAppStore } from '@/stores/app'
 import type { Staff } from '@/types'
 
+const { token } = theme.useToken()
+const appStore = useAppStore()
+const linkColor = computed(() => (appStore.theme === 'dark' ? token.value.colorPrimaryHover : THEME_PRIMARY))
 const store = useStaffStore()
 const keyword = ref('')
 const status = ref<string>()
@@ -55,7 +59,7 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
           <router-link class="name-link" :to="`/staff/${record.id}`">
-            <a-avatar :src="record.avatar" style="background: #f0f0ff" />
+            <a-avatar :src="record.avatar" :style="{ background: token.colorPrimaryBg }" />
             <span class="name">{{ record.name }}</span>
           </router-link>
         </template>
@@ -68,7 +72,7 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
           <a-space>
             <a @click="openEdit(record as Staff)">编辑</a>
             <a-popconfirm title="确定删除该员工吗？" ok-text="删除" cancel-text="取消" @confirm="onDelete(record as Staff)">
-              <a style="color: #ff4d4f">删除</a>
+              <a class="danger">删除</a>
             </a-popconfirm>
           </a-space>
         </template>
@@ -79,7 +83,8 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
 </template>
 <style scoped>
 .toolbar { display: flex; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
-.name-link { display: inline-flex; align-items: center; gap: 8px; color: v-bind(THEME_PRIMARY); text-decoration: none; }
+.name-link { display: inline-flex; align-items: center; gap: 8px; color: v-bind(linkColor); text-decoration: none; }
 .name-link:hover { text-decoration: underline; }
 .name { font-weight: 600; }
+.danger { color: v-bind('token.colorError'); }
 </style>
