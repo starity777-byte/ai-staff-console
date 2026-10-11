@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { theme } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
+import InitialsAvatar from '@/components/InitialsAvatar.vue'
 import { useStaffStore } from '@/stores/staff'
 import { useTaskStore } from '@/stores/task'
 import { PRIORITY, STAFF_STATUS, TASK_STATUS, THEME_PRIMARY } from '@/mock/constants'
@@ -63,7 +64,7 @@ function goList() { router.push('/staff') }
     </div>
     <a-card :bordered="false">
       <div class="profile">
-        <a-avatar :size="72" :src="person.avatar" class="avatar" />
+        <InitialsAvatar :name="person.name" :size="72" class="avatar" />
         <div>
           <div class="name-row">
             <h2>{{ person.name }}</h2>
@@ -133,7 +134,7 @@ function goList() { router.push('/staff') }
 <style scoped>
 .page { display: flex; flex-direction: column; gap: 16px; }
 .profile { display: flex; align-items: center; gap: 16px; }
-.avatar { background: v-bind('token.colorPrimaryBg'); flex-shrink: 0; }
+.avatar { flex-shrink: 0; }
 .name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .name-row h2 { margin: 0; font-size: 20px; color: v-bind('token.colorText'); }
 .joined { margin-top: 6px; color: v-bind('token.colorTextDescription'); }

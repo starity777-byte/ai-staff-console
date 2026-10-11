@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { message, theme } from 'ant-design-vue'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import StaffFormDrawer from '@/components/StaffFormDrawer.vue'
+import InitialsAvatar from '@/components/InitialsAvatar.vue'
 import { useStaffStore } from '@/stores/staff'
 import { MODELS } from '@/mock'
 import { STAFF_STATUS, THEME_PRIMARY } from '@/mock/constants'
@@ -59,7 +60,7 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
           <router-link class="name-link" :to="`/staff/${record.id}`">
-            <a-avatar :src="record.avatar" :style="{ background: token.colorPrimaryBg }" />
+            <InitialsAvatar :name="record.name" />
             <span class="name">{{ record.name }}</span>
           </router-link>
         </template>

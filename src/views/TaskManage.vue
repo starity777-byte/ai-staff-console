@@ -4,6 +4,7 @@ import { message, theme } from 'ant-design-vue'
 import { PlusOutlined, CalendarOutlined } from '@ant-design/icons-vue'
 import draggable from 'vuedraggable'
 import TaskFormModal from '@/components/TaskFormModal.vue'
+import InitialsAvatar from '@/components/InitialsAvatar.vue'
 import { useTaskStore } from '@/stores/task'
 import { useStaffStore } from '@/stores/staff'
 import { TASK_STATUS, PRIORITY, THEME_PRIMARY } from '@/mock/constants'
@@ -92,7 +93,7 @@ function onDelete(t: Task) { task.remove(t.id); message.success('任务已删除
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'assignee'">
           <a-space v-if="staff.getById(record.assigneeId)">
-            <a-avatar size="small" :src="staff.getById(record.assigneeId)!.avatar" />
+            <InitialsAvatar size="small" :name="staff.getById(record.assigneeId)!.name" />
             {{ staff.getById(record.assigneeId)!.name }}
             <span class="sub">{{ staff.getById(record.assigneeId)!.model }}</span>
           </a-space>
@@ -135,7 +136,7 @@ function onDelete(t: Task) { task.remove(t.id); message.success('任务已删除
                 <a-tag :color="PRIORITY[element.priority as Task['priority']].color">{{ PRIORITY[element.priority as Task['priority']].text }}</a-tag>
                 <div class="task-card-foot">
                   <a-space v-if="staff.getById(element.assigneeId)" :size="6">
-                    <a-avatar :size="22" :src="staff.getById(element.assigneeId)!.avatar" />
+                    <InitialsAvatar :size="22" :name="staff.getById(element.assigneeId)!.name" />
                     <span>{{ staff.getById(element.assigneeId)!.name }}</span>
                   </a-space>
                   <span v-else class="sub">（已离职）</span>

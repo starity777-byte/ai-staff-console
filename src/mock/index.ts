@@ -3,8 +3,6 @@ import type { Staff, Task, Activity } from '@/types'
 export const MODELS = ['Grok Build', 'Gemini 3.1 Pro', 'Claude Sonnet 4.6', 'GPT-5', 'DeepSeek V3']
 export const ROLES = ['前端工程师', '后端工程师', '数据分析师', '客服专员', '内容运营', '测试工程师']
 
-const av = (seed: string) => `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(seed)}`
-
 export const mockStaff: Staff[] = [
   { id: 1, name: '小智', model: 'Grok Build', role: '前端工程师', status: 'online', skills: ['Vue', 'TypeScript'], createdAt: '2026-08-02' },
   { id: 2, name: '星河', model: 'Gemini 3.1 Pro', role: '数据分析师', status: 'busy', skills: ['SQL', 'Python'], createdAt: '2026-08-15' },
@@ -14,7 +12,7 @@ export const mockStaff: Staff[] = [
   { id: 6, name: '青柠', model: 'Claude Sonnet 4.6', role: '测试工程师', status: 'online', skills: ['E2E', 'Playwright'], createdAt: '2026-09-19' },
   { id: 7, name: '深蓝', model: 'DeepSeek V3', role: '后端工程师', status: 'online', skills: ['Java', 'MySQL'], createdAt: '2026-09-30' },
   { id: 8, name: '云舒', model: 'Gemini 3.1 Pro', role: '内容运营', status: 'offline', skills: ['小红书', '剪辑'], createdAt: '2026-10-05' }
-].map((s) => ({ ...s, avatar: av(s.name) })) as Staff[]
+]
 
 export const mockTasks: Task[] = [
   { id: 1, title: '重构登录页组件', assigneeId: 1, progress: 70, status: 'doing', priority: 'high', deadline: '2026-10-15' },

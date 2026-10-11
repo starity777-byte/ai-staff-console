@@ -17,7 +17,7 @@ Vite 6 · Vue 3（`<script setup>`）· TypeScript · Ant Design Vue 4 · Vue Ro
 
 ```
 src/
-├── main.ts               # 入口：注册 Pinia、Router、Antd
+├── main.ts               # 入口：注册 Pinia、Router（Ant Design Vue 按需引入）
 ├── App.vue               # 全局中文 locale 与主题
 ├── layouts/BasicLayout.vue   # 侧边栏 + 顶栏布局
 ├── router/index.ts       # 路由配置（/dashboard /staff /tasks）
@@ -27,6 +27,7 @@ src/
 │   └── TaskManage.vue    # 任务管理
 ├── components/           # 可复用组件
 │   ├── StatCard.vue      # 统计卡片
+│   ├── InitialsAvatar.vue    # 离线首字头像
 │   ├── StaffFormDrawer.vue   # 员工新增/编辑抽屉
 │   └── TaskFormModal.vue     # 新建任务弹窗
 ├── stores/               # Pinia 状态（staff.ts、task.ts）
@@ -41,6 +42,7 @@ npm install
 npm run dev        # 开发模式，默认 http://localhost:5173
 npm run build      # 类型检查 + 生产构建，产物在 dist/
 npm run preview    # 预览构建产物
+npm run test       # Vitest 单元测试
 ```
 
-> 注：数据保存在内存中，刷新页面后会恢复为 Mock 初始数据。员工头像来自 DiceBear 在线接口，离线时会显示占位。
+> 注：业务数据由 Pinia 持久化到 localStorage。员工头像按姓名离线生成首字，不请求外部图片。

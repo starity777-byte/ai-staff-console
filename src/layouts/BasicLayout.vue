@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { message, theme } from 'ant-design-vue'
 import { DashboardOutlined, TeamOutlined, ProfileOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RobotOutlined, BellOutlined } from '@ant-design/icons-vue'
+import InitialsAvatar from '@/components/InitialsAvatar.vue'
 import { THEME_PRIMARY } from '@/mock/constants'
 import { useAppStore } from '@/stores/app'
 import { useStaffStore } from '@/stores/staff'
@@ -18,7 +19,14 @@ watchEffect(() => {
   document.body.style.backgroundColor = background
   document.body.style.color = token.value.colorText
 })
-const collapsed = ref(false)
+const collapsed = ref(window.matchMedia('(max-width: 768px)').matches)
+let mobileQuery: MediaQueryList | null = null
+function onMobileChange(event: MediaQueryListEvent) { collapsed.value = event.matches }
+onMounted(() => {
+  mobileQuery = window.matchMedia('(max-width: 768px)')
+  mobileQuery.addEventListener('change', onMobileChange)
+})
+onBeforeUnmount(() => mobileQuery?.removeEventListener('change', onMobileChange))
 const route = useRoute()
 const router = useRouter()
 const staffStore = useStaffStore()
@@ -81,7 +89,7 @@ function resetToSample() {
             </a-button>
           </a-tooltip>
           <a-badge :count="3" size="small"><BellOutlined class="bell" /></a-badge>
-          <a-avatar :style="{ background: THEME_PRIMARY }">管</a-avatar><span>管理员</span>
+          <InitialsAvatar name="管理员" /><span>管理员</span>
         </div>
       </a-layout-header>
       <a-layout-content class="content"><router-view /></a-layout-content>

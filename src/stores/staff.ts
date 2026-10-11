@@ -16,8 +16,7 @@ export const useStaffStore = defineStore('staff', () => {
   function add(data: Omit<Staff, 'id' | 'createdAt' | 'avatar'>) {
     const id = Math.max(0, ...list.value.map((s) => s.id)) + 1
     list.value.unshift({
-      ...data, id, createdAt: new Date().toISOString().slice(0, 10),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(data.name)}`
+      ...data, id, createdAt: new Date().toISOString().slice(0, 10)
     })
     useTaskStore().logStaffJoined({ id, name: data.name, model: data.model })
   }
