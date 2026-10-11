@@ -24,5 +24,8 @@ export const useStaffStore = defineStore('staff', () => {
     if (s) Object.assign(s, data)
   }
   function remove(id: number) { list.value = list.value.filter((s) => s.id !== id) }
-  return { list, onlineCount, modelStats, getById, add, update, remove }
+  function resetToSample() { list.value = structuredClone(mockStaff) }
+  return { list, onlineCount, modelStats, getById, add, update, remove, resetToSample }
+}, {
+  persist: { storage: localStorage }
 })

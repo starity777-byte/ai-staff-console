@@ -14,5 +14,11 @@ export const useTaskStore = defineStore('task', () => {
     list.value.unshift({ ...data, id })
   }
   function remove(id: number) { list.value = list.value.filter((t) => t.id !== id) }
-  return { list, activities, doingCount, doneCount, completionRate, add, remove }
+  function resetToSample() {
+    list.value = structuredClone(mockTasks)
+    activities.value = structuredClone(mockActivities)
+  }
+  return { list, activities, doingCount, doneCount, completionRate, add, remove, resetToSample }
+}, {
+  persist: { storage: localStorage }
 })

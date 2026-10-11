@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
 import { DashboardOutlined, TeamOutlined, ProfileOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RobotOutlined, BellOutlined } from '@ant-design/icons-vue'
 import { THEME_PRIMARY } from '@/mock/constants'
+import { useStaffStore } from '@/stores/staff'
+import { useTaskStore } from '@/stores/task'
 const collapsed = ref(false)
 const route = useRoute()
 const router = useRouter()
+const staffStore = useStaffStore()
+const taskStore = useTaskStore()
 const selected = computed(() => [route.path])
 const title = computed(() => (route.meta.title as string) || '')
 const menus = [
@@ -13,6 +18,11 @@ const menus = [
   { key: '/staff', label: '员工列表', icon: TeamOutlined },
   { key: '/tasks', label: '任务管理', icon: ProfileOutlined }
 ]
+function resetToSample() {
+  staffStore.resetToSample()
+  taskStore.resetToSample()
+  message.success('已重置为示例数据')
+}
 </script>
 <template>
   <a-layout style="min-height: 100vh">
@@ -27,6 +37,9 @@ const menus = [
         <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" class="trigger" @click="collapsed = !collapsed" />
         <a-breadcrumb><a-breadcrumb-item>首页</a-breadcrumb-item><a-breadcrumb-item>{{ title }}</a-breadcrumb-item></a-breadcrumb>
         <div class="right">
+          <a-popconfirm title="确定重置为示例数据？" ok-text="重置" cancel-text="取消" @confirm="resetToSample">
+            <a-button>重置示例数据</a-button>
+          </a-popconfirm>
           <a-badge :count="3" size="small"><BellOutlined style="font-size: 18px" /></a-badge>
           <a-avatar :style="{ background: THEME_PRIMARY }">管</a-avatar><span>管理员</span>
         </div>
