@@ -1,5 +1,4 @@
 import type { Staff, Task, Activity } from '@/types'
-import { THEME_PRIMARY } from './constants'
 
 export const MODELS = ['Grok Build', 'Gemini 3.1 Pro', 'Claude Sonnet 4.6', 'GPT-5', 'DeepSeek V3']
 export const ROLES = ['前端工程师', '后端工程师', '数据分析师', '客服专员', '内容运营', '测试工程师']
@@ -30,10 +29,10 @@ export const mockTasks: Task[] = [
 ]
 
 export const mockActivities: Activity[] = [
-  { id: 1, time: '10-11 09:32', content: '小智 完成了「组件库暗色主题适配」', color: THEME_PRIMARY },
-  { id: 2, time: '10-11 09:10', content: '深蓝 开始处理「数据库慢查询优化」', color: THEME_PRIMARY },
-  { id: 3, time: '10-10 18:45', content: '青柠 完成了「支付流程回归测试」', color: THEME_PRIMARY },
-  { id: 4, time: '10-10 15:20', content: '新员工 云舒（Gemini 3.1 Pro）加入团队', color: THEME_PRIMARY },
-  { id: 5, time: '10-10 11:02', content: '阿码 的任务「订单服务接口限流」被标记为高优先级', color: THEME_PRIMARY },
-  { id: 6, time: '10-09 17:30', content: '星河 提交了「九月用户留存分析报告」', color: THEME_PRIMARY }
+  { id: 1, time: '10-11 09:32', content: '小智 完成了「组件库暗色主题适配」', type: 'task_completed', staffId: 1 },
+  { id: 2, time: '10-11 09:10', content: '深蓝 开始处理「数据库慢查询优化」', type: 'task_started', staffId: 7 },
+  { id: 3, time: '10-10 18:45', content: '青柠 完成了「支付流程回归测试」', type: 'task_completed', staffId: 6 },
+  { id: 4, time: '10-10 15:20', content: '新员工 云舒（Gemini 3.1 Pro）加入团队', type: 'staff_joined', staffId: 8 },
+  { id: 5, time: '10-10 11:02', content: '阿码 的任务「订单服务接口限流」被标记为高优先级', type: 'task_urgent', staffId: 4 },
+  { id: 6, time: '10-09 17:30', content: '星河 提交了「九月用户留存分析报告」', type: 'other', staffId: 2 }
 ]

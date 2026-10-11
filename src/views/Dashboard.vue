@@ -5,6 +5,7 @@ import StatCard from '@/components/StatCard.vue'
 import { useStaffStore } from '@/stores/staff'
 import { useTaskStore } from '@/stores/task'
 import { TASK_STATUS, THEME_PRIMARY } from '@/mock/constants'
+import { activityDotColor } from '@/utils/activity'
 const staff = useStaffStore()
 const task = useTaskStore()
 const cards = computed(() => [
@@ -21,7 +22,7 @@ const statusDist = computed(() => (Object.keys(TASK_STATUS) as (keyof typeof TAS
     <a-col :xs="24" :lg="14">
       <a-card title="最近动态" :bordered="false">
         <a-timeline>
-          <a-timeline-item v-for="a in task.activities" :key="a.id" :color="a.color || THEME_PRIMARY">
+          <a-timeline-item v-for="a in task.activities" :key="a.id" :color="activityDotColor(a)">
             <div>{{ a.content }}</div><div class="time">{{ a.time }}</div>
           </a-timeline-item>
         </a-timeline>

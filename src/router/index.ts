@@ -8,6 +8,7 @@ export default createRouter({
     children: [
       { path: 'dashboard', component: () => import('@/views/Dashboard.vue'), meta: { title: '数据看板' } },
       { path: 'staff', component: () => import('@/views/StaffList.vue'), meta: { title: '员工列表' } },
+      { path: 'staff/:id', component: () => import('@/views/StaffDetail.vue'), meta: { title: '员工详情', activeMenu: '/staff' } },
       { path: 'tasks', component: () => import('@/views/TaskManage.vue'), meta: { title: '任务管理' } }
     ]
   }]

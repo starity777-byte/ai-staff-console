@@ -5,7 +5,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import StaffFormDrawer from '@/components/StaffFormDrawer.vue'
 import { useStaffStore } from '@/stores/staff'
 import { MODELS } from '@/mock'
-import { STAFF_STATUS } from '@/mock/constants'
+import { STAFF_STATUS, THEME_PRIMARY } from '@/mock/constants'
 import type { Staff } from '@/types'
 
 const store = useStaffStore()
@@ -54,7 +54,10 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
     <a-table :columns="columns" :data-source="data" row-key="id" :pagination="{ pageSize: 8, showTotal: (t: number) => `共 ${t} 名员工` }">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a-space><a-avatar :src="record.avatar" style="background: #f0f0ff" /><b>{{ record.name }}</b></a-space>
+          <router-link class="name-link" :to="`/staff/${record.id}`">
+            <a-avatar :src="record.avatar" style="background: #f0f0ff" />
+            <span class="name">{{ record.name }}</span>
+          </router-link>
         </template>
         <template v-else-if="column.key === 'model'"><a-tag :color="modelColor[record.model]">{{ record.model }}</a-tag></template>
         <template v-else-if="column.key === 'skills'"><a-tag v-for="s in record.skills" :key="s">{{ s }}</a-tag></template>
@@ -76,4 +79,7 @@ function reset() { keyword.value = ''; status.value = undefined; model.value = u
 </template>
 <style scoped>
 .toolbar { display: flex; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+.name-link { display: inline-flex; align-items: center; gap: 8px; color: v-bind(THEME_PRIMARY); text-decoration: none; }
+.name-link:hover { text-decoration: underline; }
+.name { font-weight: 600; }
 </style>

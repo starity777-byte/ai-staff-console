@@ -11,13 +11,24 @@ const route = useRoute()
 const router = useRouter()
 const staffStore = useStaffStore()
 const taskStore = useTaskStore()
-const selected = computed(() => [route.path])
-const title = computed(() => (route.meta.title as string) || '')
 const menus = [
   { key: '/dashboard', label: '数据看板', icon: DashboardOutlined },
   { key: '/staff', label: '员工列表', icon: TeamOutlined },
   { key: '/tasks', label: '任务管理', icon: ProfileOutlined }
 ]
+const selected = computed(() => {
+  const activeMenu = route.meta.activeMenu
+  if (typeof activeMenu === 'string') return [activeMenu]
+  const hit = menus.find((item) => route.path === item.key || route.path.startsWith(`${item.key}/`))
+  return [hit?.key ?? route.path]
+})
+const parentCrumb = computed(() => {
+  const activeMenu = route.meta.activeMenu
+  if (typeof activeMenu !== 'string') return null
+  const item = menus.find((menu) => menu.key === activeMenu)
+  return item ? { path: item.key, label: item.label } : null
+})
+const title = computed(() => (route.meta.title as string) || '')
 function resetToSample() {
   staffStore.resetToSample()
   taskStore.resetToSample()
@@ -35,7 +46,11 @@ function resetToSample() {
     <a-layout>
       <a-layout-header class="header">
         <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" class="trigger" @click="collapsed = !collapsed" />
-        <a-breadcrumb><a-breadcrumb-item>首页</a-breadcrumb-item><a-breadcrumb-item>{{ title }}</a-breadcrumb-item></a-breadcrumb>
+        <a-breadcrumb>
+          <a-breadcrumb-item>首页</a-breadcrumb-item>
+          <a-breadcrumb-item v-if="parentCrumb"><router-link :to="parentCrumb.path">{{ parentCrumb.label }}</router-link></a-breadcrumb-item>
+          <a-breadcrumb-item>{{ title }}</a-breadcrumb-item>
+        </a-breadcrumb>
         <div class="right">
           <a-popconfirm title="确定重置为示例数据？" ok-text="重置" cancel-text="取消" @confirm="resetToSample">
             <a-button>重置示例数据</a-button>

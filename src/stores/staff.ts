@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Staff } from '@/types'
 import { mockStaff } from '@/mock'
+import { useTaskStore } from '@/stores/task'
 
 export const useStaffStore = defineStore('staff', () => {
   const list = ref<Staff[]>(structuredClone(mockStaff))
@@ -18,6 +19,7 @@ export const useStaffStore = defineStore('staff', () => {
       ...data, id, createdAt: new Date().toISOString().slice(0, 10),
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(data.name)}`
     })
+    useTaskStore().logStaffJoined({ id, name: data.name, model: data.model })
   }
   function update(id: number, data: Partial<Staff>) {
     const s = getById(id)
